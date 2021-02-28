@@ -1,0 +1,21 @@
+const Vote = require("./models/vote.js");
+const handleDB = require("./mw/db.js");
+const handleObs = require("./mw/obs.js");
+
+async function handler(req, res){
+    try{       
+        const result = await Vote.find({});
+        console.log(result);
+        return res.status(200).json({
+            path: "results end point",
+            data: result
+        });
+    }catch(e){
+        return res.status(400).json({
+            details: e
+        });
+    }
+}
+
+
+module.exports = handleObs(handleDB(handler));

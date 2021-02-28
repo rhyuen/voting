@@ -1,0 +1,7 @@
+node_modules
+
+.vercel
+newrelic.js
+newrelic_agent.log
+.next
+.env
