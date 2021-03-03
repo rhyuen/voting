@@ -1,7 +1,8 @@
-const Vote = require("./models/vote.js");
+const Poll = require("./models/poll.js");
 const handleDB = require("./mw/db.js");
 const handleObs = require("./mw/obs.js");
 const validator = require("validator");
+const {withApiAuthRequired, getSession} = require("@auth0/nextjs-auth0");
 
 async function handler(req, res){
     
@@ -15,7 +16,9 @@ async function handler(req, res){
         const {poll, value} = req.body;        
         const escPollID = validator.escape(poll);
         const escChoiceName = validator.escape(value);
-        
+
+        const {user} = getSession(req, res);
+        console.log(user.email);
         const filter = {
             _id: escPollID,
             "choices.name": escChoiceName
@@ -28,11 +31,12 @@ async function handler(req, res){
         const options = {
             new: true
         };        
-        const result = await Vote.findOneAndUpdate(filter, update, options).exec();        
+        const result = await Poll.findOneAndUpdate(filter, update, options).exec();        
         
                 
         return res.status(200).json({
             path: "POST /api/post-id-poll",  
+            writer: user.email,
             data: result          
         });
     }catch(e){
@@ -43,4 +47,4 @@ async function handler(req, res){
 }
 
 
-module.exports = handleObs(handleDB(handler));
+module.exports = withApiAuthRequired(handleObs(handleDB(handler)));

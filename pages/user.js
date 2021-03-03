@@ -1,0 +1,29 @@
+import {useUser} from "@auth0/nextjs-auth0";
+
+export default function UserHome(){
+    const {user, error, isLoading} = useUser();
+    if (isLoading){
+        return <div>Loading.</div>
+    }
+
+    if(error){
+        return <div>{error.message}</div>
+    }
+
+    if (user){
+        return (
+            <div>
+            Welcome {user.name}! <a href="/api/auth/logout">Logout</a>
+            <p>
+            <ul>
+                {Object.keys(user).map(key => {
+                    return(<li>{key}::{user[key]}</li>)
+                })}
+                </ul>
+            </p>
+            </div>
+        )
+    }
+
+    return <a href="/api/auth/login">Login</a>
+}

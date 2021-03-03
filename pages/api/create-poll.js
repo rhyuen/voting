@@ -1,7 +1,8 @@
-const Vote = require("./models/vote.js");
+const Poll = require("./models/poll.js");
 const handleObs = require("./mw/obs.js");
 const handleDB = require("./mw/db.js");
 const validator = require("validator");
+const {withApiAuthRequired, getSession} = require("@auth0/nextjs-auth0");
 
 async function handler(req, res){
     try{
@@ -23,9 +24,12 @@ async function handler(req, res){
             };
         });
 
-        const latest = new Vote({
+        const {user} = getSession(req, res);
+
+        const latest = new Poll({
             title: escTitle,
             startDate: Date.now(),
+            creator: user.email,
             question: escQuestion,
             choices: formattedAllTheChoices,
             endDate: Date.now() + 3600000
@@ -46,4 +50,4 @@ async function handler(req, res){
 }
 
 
-module.exports = handleObs(handleDB(handler));
+module.exports = withApiAuthRequired(handleObs(handleDB(handler)));
