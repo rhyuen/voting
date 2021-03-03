@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function NewVote({
+export default function NewPoll({
     onSubmit, 
     onChoiceChange, 
     choiceValues, 

@@ -1,13 +1,17 @@
-const Vote = require("./models/vote.js");
+const {withApiAuthRequired, getSession} = require("@auth0/nextjs-auth0");
+const Poll = require("./models/poll.js");
 const handleObs = require("./mw/obs.js");
 const handleDB = require("./mw/db.js");
 
 async function handler(req, res){
     try{
-        const activeVotes = await Vote.find({});
+        const {user} = getSession(req, res);
+
+        const activePolls = await Poll.find({});
         return res.status(200).json({
             path: "results end point",
-            payload: activeVotes
+            payload: activePolls,
+            authed: user
         });
     }catch(e){
         return res.status(400).json({
@@ -17,4 +21,4 @@ async function handler(req, res){
 }
 
 
-module.exports = handleObs(handleDB(handler));
+module.exports = withApiAuthRequired(handleObs(handleDB(handler)));

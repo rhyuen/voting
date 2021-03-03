@@ -1,10 +1,10 @@
-const Vote = require("./models/vote.js");
+const Poll = require("./models/poll.js");
 const handleDB = require("./mw/db.js");
 const handleObs = require("./mw/obs.js");
 
 async function handler(req, res){
     try{       
-        const result = await Vote.find({});
+        const result = await Poll.find({});
         console.log(result);
         return res.status(200).json({
             path: "results end point",
