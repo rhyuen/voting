@@ -6,7 +6,13 @@
   "scripts": {
     "dev": "next dev",
     "start": "start",
-    "test": "jest"
+    "test": "jest --testTimeout=10000",
+    "dev:server": "vercel dev --listen 3000 &",
+    "dev:test": "npm run dev:server && wait-on tcp:3000 && npm run test;  npm run cleanup",
+    "ci:dev": "vercel dev --listen 3000 --token $VERCEL_TOKEN --confirm &",
+    "ci:test": "npm run ci:dev && wait-on tcp:3000 && npm run test; npm run cleanup",
+    "cleanup": "ps | grep node | awk '{print $1}' | xargs kill -9 $1",
+    "deploy": "vercel --prod"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +29,7 @@
   },
   "devDependencies": {
     "jest": "^26.6.3",
+    "node-fetch": "^2.6.1",
     "wait-on": "^5.2.1"
   }
 }

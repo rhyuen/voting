@@ -7,8 +7,8 @@ async function handler(req, res){
         const result = await Poll.find({});
         console.log(result);
         return res.status(200).json({
-            path: "results end point",
-            data: result
+            path: "[GET] Results Endpoint",
+            payload: result
         });
     }catch(e){
         return res.status(400).json({
