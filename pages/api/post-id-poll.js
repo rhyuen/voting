@@ -18,28 +18,42 @@ async function handler(req, res){
         const escChoiceName = validator.escape(value);
 
         const {user} = getSession(req, res);
-        console.log(user.email);
+        
         const filter = {
             _id: escPollID,
             "choices.name": escChoiceName
         };
-        const update = {            
-            $inc: {
-                "choices.$.count": 1
+        const update = {                      
+            $addToSet: {
+                "choices.$.voters": user.email
             }
         };
         const options = {
             new: true
         };        
-        const result = await Poll.findOneAndUpdate(filter, update, options).exec();        
+        const result = await Poll.findOneAndUpdate(filter, update, options).exec();
+        
+        const {choices} = result;
+        
+        let summary = {
+            results: {},
+            votedFor: escChoiceName
+        }
+
+        for(let c = 0; c < choices.length; c++){
+            summary.results[choices[c].name]=choices[c].voters.length;
+        }
+        
+        const toJSObject = JSON.parse(JSON.stringify(result));
+        const payload = Object.assign(toJSObject, summary);
         
                 
         return res.status(200).json({
-            path: "POST /api/post-id-poll",  
-            writer: user.email,
-            data: result          
+            path: "POST /api/post-id-poll",              
+            data: payload,            
         });
     }catch(e){
+        console.log(e);
         return res.status(400).json({
             details: e
         });

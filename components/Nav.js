@@ -13,7 +13,7 @@ export default function Nav(){
                     <span><Link href="/contact">contact</Link></span>
                 </div>
                 <div className="right">
-                    Welcome {  user ? user.name : "User"} <a href= "/api/auth/logout">Logout</a>
+                    {  user ? user.name : "User"} <a href= "/api/auth/logout">Logout</a>
                 </div>
             </div>
             <style jsx>{`                

@@ -20,7 +20,10 @@ const pollSchema = new mongoose.Schema({
                 type: Number,
                 required: true,
                 default: 0
-            }
+            },
+            voters: [{
+                type: String
+            }]
         }
     ],
     endDate: {
@@ -31,5 +34,6 @@ const pollSchema = new mongoose.Schema({
         createdAt: "created_at"
     }
 });
+
 
 module.exports = mongoose.models.Poll || mongoose.model("Poll", pollSchema);

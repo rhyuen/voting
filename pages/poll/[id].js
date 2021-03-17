@@ -11,13 +11,13 @@ export default function Poll(){
     
     useEffect(() => {
         if (router.isReady) {
-            const url = `/api/poll/${router.query.id}`;
-            console.log(url);
+            const url = `/api/poll/${router.query.id}`;            
             fetch(url)
                 .then(res => res.json())
                 .then(res => {                                    
-                    setData(res.data[0]);
-                    setLoading(false);                    
+                    setData(res.data);
+                    console.log(res.data);
+                    setLoading(false);                              
                 }).catch(e => {
                     console.log(e)
                 });   
@@ -26,8 +26,7 @@ export default function Poll(){
 
     const handleSubmit = e => {        
         e.preventDefault();
-        setChoice("");
-        console.log(choice);
+        setChoice("");        
         const payload = {
             poll: data._id,
             value: choice
@@ -60,7 +59,7 @@ export default function Poll(){
         {                  
 
           loading ? <h1>loading</h1> :  
-          resultsVisible ? <Results data = {data} handleClick = {setResultsVisible}/> : (
+          resultsVisible ? <Results data = {data} handleClick = {setResultsVisible}/> :  (
             <>                    
                 <h1>{data.title}</h1>    
                 <h2>{data.question}</h2>
@@ -78,7 +77,11 @@ export default function Poll(){
                             </p>
                         ))
                     }     
-                    <input type = "submit" value="Vote" onClick = {handleSubmit}/>
+                    {
+                        data.canVoted ? null : <h3>You can only vote once</h3>
+                    }
+                    <input type = "submit" value="Vote" onClick = {handleSubmit} disabled={!data.canVote}/>
+                    
                 </form>                 
                 <div>
                     <button type="button" onClick = {e => setResultsVisible(true)}>Show Results</button>
@@ -91,15 +94,18 @@ export default function Poll(){
 }
 
 const Results = ({data, handleClick}) => {    
+
+    const {title, question, results, votedFor} = data;
+
     return( 
         <>                    
-            <h1>{data.title}</h1>    
-            <h2>{data.question}</h2>
+            <h1>{title}</h1>    
+            <h2>{question}</h2>
             <ul>
                 {                        
-                    data.choices.map(({count, name}, results_index) => (                                    
+                    Object.keys(results).map((k, results_index) => (                                    
                         <li key={results_index}>
-                            {name}: {count}                    
+                            {k}  {results[k]} {k===votedFor ? <strong>You voted for this one</strong> : "blah"}
                         </li>
                     ))
                 }     
