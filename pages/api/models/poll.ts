@@ -1,6 +1,22 @@
-const mongoose = require('mongoose');
+import mongoose, { model, Schema, Model, Document } from "mongoose";
 
-const pollSchema = new mongoose.Schema({
+interface IChoice {
+    name: string;
+    count: number;
+    voters: Array<string>;
+}
+
+interface IPoll extends Document {
+    startDate: Date;
+    title: string;
+    question: string;
+    creator: string;
+    choices: Array<IChoice>;
+    endDate: Date;
+}
+
+
+const pollSchema = new Schema({
     startDate: {
         type: Date
     },
@@ -35,5 +51,6 @@ const pollSchema = new mongoose.Schema({
     }
 });
 
+const Poll: Model<IPoll> = mongoose.models.Poll || model<IPoll>("Poll", pollSchema);
 
-module.exports = mongoose.models.Poll || mongoose.model("Poll", pollSchema);
+export default Poll;

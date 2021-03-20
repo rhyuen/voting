@@ -1,19 +1,21 @@
-const Poll = require("./models/poll.js");
-const handleObs = require("./mw/obs.js");
-const handleDB = require("./mw/db.js");
-const validator = require("validator");
-const {withApiAuthRequired, getSession} = require("@auth0/nextjs-auth0");
+import { NextApiRequest, NextApiResponse } from "next";
 
-async function handler(req, res){
-    try{
-        if(req.method !== "POST"){
+import Poll from "./models/poll";
+import handleObs from "./mw/obs";
+import handleDB from "./mw/db";
+import validator from "validator";
+import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0";
+
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+    try {
+        if (req.method !== "POST") {
             return res.status(400).json({
                 details: "only POSTS are allowed at this endpoint."
-            });            
+            });
         }
 
 
-        const {title, choices, question} = req.body;
+        const { title, choices, question } = req.body;
 
         const escTitle = validator.escape(title);
         const escQuestion = validator.escape(question);
@@ -24,7 +26,7 @@ async function handler(req, res){
             };
         });
 
-        const {user} = getSession(req, res);
+        const { user } = getSession(req, res);
 
         const latest = new Poll({
             title: escTitle,
@@ -39,10 +41,10 @@ async function handler(req, res){
         console.log(result);
 
         return res.status(200).json({
-            path: "[POST] /api/create-poll",        
+            path: "[POST] /api/create-poll",
             details: result
         });
-    }catch(e){
+    } catch (e) {
         return res.status(400).json({
             details: e
         });
