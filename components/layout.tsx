@@ -1,11 +1,11 @@
-import Nav from "./Nav.js";
+import Nav from "./Nav";
 
-export default function Layout({children}){
+export default function Layout({ children }) {
     return (
         <div>
             <Nav></Nav>
             <main>
-            {children}
+                {children}
             </main>
             <style jsx>{`
                 main{

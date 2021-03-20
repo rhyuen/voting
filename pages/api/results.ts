@@ -1,18 +1,17 @@
-const Poll = require("./models/poll.js");
+const Poll = require("./models/poll");
 const handleDB = require("./mw/db.js");
 const handleObs = require("./mw/obs.js");
-const {getSession} = require("@auth0/nextjs-auth0");
+const { withApiAuthRequired } = require("@auth0/nextjs-auth0");
+import { NextApiRequest, NextApiResponse } from "next";
 
-async function handler(req, res){
-    try{       
-        const result = await Poll.find({});
-        const {user} = getSession(req, res);
-        console.log(result);
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+    try {
+        const result = await Poll.find({}).exec();
         return res.status(200).json({
             path: "[GET] Results Endpoint",
             payload: result
         });
-    }catch(e){
+    } catch (e) {
         return res.status(400).json({
             details: e
         });
