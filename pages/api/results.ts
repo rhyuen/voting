@@ -1,6 +1,6 @@
 const Poll = require("./models/poll");
-const handleDB = require("./mw/db.js");
-const handleObs = require("./mw/obs.js");
+const handleDB = require("./mw/db");
+const handleObs = require("./mw/obs");
 const { withApiAuthRequired } = require("@auth0/nextjs-auth0");
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -19,4 +19,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-module.exports = withApiAuthRequired(handleObs(handleDB(handler)));
+module.exports = handleObs(handleDB(handler));

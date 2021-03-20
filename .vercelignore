@@ -1,3 +1,8 @@
 .env
 newrelic.js
 newrelic_agent.log
+.next
+node_modules
+__test__
+.circleci
+.vercel
