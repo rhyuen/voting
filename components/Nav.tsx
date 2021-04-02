@@ -1,8 +1,8 @@
 import Link from "next/link";
-import {useUser} from "@auth0/nextjs-auth0";
+import { useUser } from "@auth0/nextjs-auth0";
 
-export default function Nav(){
-    const {user} = useUser();
+export default function Nav() {
+    const { user } = useUser();
 
     return (
         <nav>
@@ -11,9 +11,10 @@ export default function Nav(){
                     <span><Link href="/">home</Link></span>
                     <span><Link href="/about">about</Link></span>
                     <span><Link href="/contact">contact</Link></span>
+                    <span><Link href="/user">Polls</Link></span>
                 </div>
                 <div className="right">
-                    {  user ? user.name : "User"} <a href= "/api/auth/logout">Logout</a>
+                    {user ? user.name : "User"} <a href="/api/auth/logout">Logout</a>
                 </div>
             </div>
             <style jsx>{`                
