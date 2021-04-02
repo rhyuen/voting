@@ -1,29 +1,32 @@
-import { useUser } from "@auth0/nextjs-auth0";
+import { useState, useEffect } from "react";
+import Layout from "../components/layout";
+import List from "../components/List"
 
 export default function UserHome() {
-    const { user, error, isLoading } = useUser();
-    if (isLoading) {
-        return <div>Loading.</div>
-    }
+    const [isDataLoading, setIsDataLoading] = useState(true);
+    const [data, setData] = useState([]);
 
-    if (error) {
-        return <div>{error.message}</div>
-    }
+    useEffect(() => {
+        const url = "/api/get-created-polls";
+        fetch(url)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res.count);
+                setData(res.payload);
+                setIsDataLoading(false);
+            }).catch(e => {
+                console.log(e);
+            });
+    }, []);
 
-    if (user) {
-        return (
-            <div>
-                Welcome {user.name}! <a href="/api/auth/logout">Logout</a>
-                <p>
-                    <ul>
-                        {Object.keys(user).map((key, index) => {
-                            return (<li key={index}>{key}::{user[key]}</li>)
-                        })}
-                    </ul>
-                </p>
-            </div>
-        )
-    }
 
-    return <a href="/api/auth/login">Login</a>
+
+    return (
+        <Layout>
+            <section>
+                <List data={data} />
+
+            </section>
+        </Layout>
+    )
 }

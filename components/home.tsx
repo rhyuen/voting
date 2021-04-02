@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import NewPoll from "./new-poll";
 import Layout from "./layout";
 import Link from "next/link";
+import List from "./List";
 import { Data } from "../shared/types";
 
 
@@ -80,22 +81,7 @@ export default function HomePage() {
                 setTitle={setTitle}
                 question={question}
                 setQuestion={setQuestion} />
-            <div style={{ display: "flex", flexDirection: "column-reverse" }}>
-                {
-                    data && data.length === 0 ? <h2>Add something please</h2> :
-
-                        data.map(({ title: curr_title, question: curr_question, _id: id }, index) => {
-                            return (
-                                <div key={index}>
-                                    <Link href={`/poll/${id}`}>
-                                        <a>{index} / {curr_title ?? "No Title"}:{curr_question ?? "No Question"}</a>
-                                    </Link><br />
-                                </div>
-                            );
-                        })
-                }
-
-            </div>
+            <List data={data} />
         </Layout>
     )
 }
