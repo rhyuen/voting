@@ -12,8 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         const activePolls = await Poll.find({}).exec();
         return res.status(200).json({
             path: "results end point",
-            payload: activePolls,
-            authed: user
+            payload: activePolls
         });
     } catch (e) {
         return res.status(400).json({

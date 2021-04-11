@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import NewPoll from "./new-poll";
 import Layout from "./layout";
-import Link from "next/link";
 import List from "./List";
 import { Data } from "../shared/types";
+import { getActivePolls } from "../services/polls";
 
 
 export default function HomePage() {
@@ -60,15 +60,19 @@ export default function HomePage() {
 
 
     useEffect(() => {
-        const url = "/api/get-active-polls";
-        fetch(url)
-            .then(res => res.json())
+        let mounted = true;
+        getActivePolls()
             .then(res => {
-                console.log(data);
-                setData(res.payload);
+                if (mounted) {
+                    setData(res.payload);
+                }
             }).catch(e => {
                 console.log(e);
             });
+
+        return () => {
+            mounted = false;
+        }
     }, [])
 
     return (

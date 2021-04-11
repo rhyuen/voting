@@ -1,22 +1,25 @@
 import { useState, useEffect } from "react";
 import Layout from "../components/layout";
 import List from "../components/List"
+import { getUserCreatedPolls } from "../services/polls";
 
 export default function UserHome() {
-    const [isDataLoading, setIsDataLoading] = useState(true);
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        const url = "/api/get-created-polls";
-        fetch(url)
-            .then(res => res.json())
+        let mounted = true;
+        getUserCreatedPolls()
             .then(res => {
-                console.log(res.count);
-                setData(res.payload);
-                setIsDataLoading(false);
+                if (mounted) {
+                    setData(res.payload);
+                }
+                return () => mounted = false;
             }).catch(e => {
                 console.log(e);
             });
+        return () => {
+            mounted = false;
+        }
     }, []);
 
 
@@ -24,8 +27,8 @@ export default function UserHome() {
     return (
         <Layout>
             <section>
+                <h1>Your created Polls</h1>
                 <List data={data} />
-
             </section>
         </Layout>
     )

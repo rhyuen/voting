@@ -14,7 +14,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         const createdPolls = await Poll.find({ creator: user.email }).exec();
         return res.status(200).json({
             path: "creator polls endpoint",
-            count: createdPolls.length,
             payload: createdPolls
         });
     } catch (e) {
