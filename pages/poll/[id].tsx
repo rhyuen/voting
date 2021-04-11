@@ -2,6 +2,8 @@ import Layout from "../../components/layout";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Data } from "../../shared/types";
+import { useUser } from "@auth0/nextjs-auth0";
+import CreatorBar from "../../components/CreatorBar";
 
 
 
@@ -10,20 +12,35 @@ export default function Poll() {
     const [loading, setLoading] = useState<boolean>(true);
     const [choice, setChoice] = useState<string>("");
     const [resultsVisible, setResultsVisible] = useState<boolean>(false);
+    const { user, error, isLoading } = useUser();
     const router = useRouter();
 
+    if (error) {
+        return <div>{error.message}</div>;
+    }
+
+    if (isLoading) {
+        return <div>Loading User Details</div>;
+    }
+
     useEffect(() => {
+        let mounted = true;
         if (router.isReady) {
             const url = `/api/poll/${router.query.id}`;
             fetch(url)
                 .then(res => res.json())
                 .then(res => {
-                    setData(res.data);
-                    console.log(res.data);
-                    setLoading(false);
+                    if (mounted) {
+                        setData(res.data);
+                        console.log(res.data);
+                        setLoading(false);
+                    }
                 }).catch(e => {
                     console.log(e)
                 });
+        }
+        return () => {
+            mounted = false;
         }
     }, [router.isReady]);
 
@@ -60,7 +77,12 @@ export default function Poll() {
     return (
         <Layout>
             {
+                loading ?
+                    <h1>Loading User details</h1> :
+                    data.creator === user.email ? <CreatorBar pollID={data._id} /> : null
+            }
 
+            {
                 loading ? <h1>loading</h1> :
                     resultsVisible ? <Results data={data} handleClick={setResultsVisible} /> : (
                         <>
@@ -84,7 +106,6 @@ export default function Poll() {
                                     data.canVote ? null : <h3>You can only vote once</h3>
                                 }
                                 <input type="submit" value="Vote" disabled={!data.canVote} />
-
                             </form>
                             <div>
                                 <button type="button" onClick={e => setResultsVisible(true)}>Show Results</button>
@@ -119,3 +140,5 @@ const Results = ({ data, handleClick }) => {
         </>
     );
 }
+
+
