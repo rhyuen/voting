@@ -3,7 +3,7 @@ import NewPoll from "./new-poll";
 import Layout from "./layout";
 import List from "./List";
 import { Data } from "../shared/types";
-import { getActivePolls } from "../services/polls";
+import { getActivePolls, createPoll } from "../services/polls";
 
 
 export default function HomePage() {
@@ -31,18 +31,10 @@ export default function HomePage() {
             return update;
         });
 
-        const url = "/api/create-poll";
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        }
-        fetch(url, options)
-            .then(res => res.json())
+
+        createPoll(payload)
             .then(res => {
-                setData(data.concat(res.details));
+                setData(data.concat(res.payload));
             }).catch(e => {
                 console.error(e)
             });

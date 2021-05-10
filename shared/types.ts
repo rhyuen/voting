@@ -19,3 +19,4 @@ export interface Data {
     _v: number;
     _id: string;
 }
+

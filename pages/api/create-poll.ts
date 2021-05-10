@@ -42,7 +42,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
         return res.status(200).json({
             path: "[POST] /api/create-poll",
-            details: result
+            payload: result
         });
     } catch (e) {
         return res.status(400).json({
