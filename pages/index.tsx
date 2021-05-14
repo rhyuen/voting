@@ -1,5 +1,5 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import Home from "../components/home";
+import Home from "../components/Home";
 
 export default function Index() {
     const { user, error, isLoading } = useUser();
