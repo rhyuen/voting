@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import NewPoll from "./new-poll";
-import Layout from "./layout";
+import NewPoll from "./NewPoll";
+import Layout from "./Layout";
 import List from "./List";
 import { Data } from "../shared/types";
 import { getActivePolls, createPoll } from "../services/polls";
