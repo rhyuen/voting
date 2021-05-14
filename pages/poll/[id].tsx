@@ -129,7 +129,7 @@ const Results = ({ data, handleClick }) => {
                 {
                     Object.keys(results).map((k, results_index) => (
                         <li key={results_index}>
-                            {k}  {results[k]} {k === votedFor ? <strong>You voted for this one</strong> : "blah"}
+                            {k}  {results[k]} {k === votedFor ? <strong>You voted for this one</strong> : null}
                         </li>
                     ))
                 }

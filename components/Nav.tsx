@@ -8,10 +8,10 @@ export default function Nav() {
         <nav>
             <div className="nav__container">
                 <div className="left">
-                    <span><Link href="/">home</Link></span>
-                    <span><Link href="/about">about</Link></span>
-                    <span><Link href="/contact">contact</Link></span>
-                    <span><Link href="/user">Polls</Link></span>
+                    <span className="nav__container__item"><Link href="/">Home</Link></span>
+                    <span className="nav__container__item"><Link href="/about">About</Link></span>
+                    <span className="nav__container__item"><Link href="/contact">Contact</Link></span>
+                    <span className="nav__container__item"><Link href="/user">Polls</Link></span>
                 </div>
                 <div className="right">
                     {user ? user.name : "User"} <a href="/api/auth/logout">Logout</a>
@@ -19,9 +19,9 @@ export default function Nav() {
             </div>
             <style jsx>{`                
                 nav{                    
-                    padding: 3vh;
-                    background-color: #bdf2d8;
-                    height: 8vh;                                        
+                    padding: 3vh;                    
+                    height: 8vh; 
+                    border-bottom: 1px solid rgba(0,0,0,0.1);
                 }     
                 .nav__container{
                     max-width: 1000px;
@@ -30,6 +30,13 @@ export default function Nav() {
                     justify-content: space-between;
                     align-items: center;
                 }   
+
+                .nav__container__item{
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    margin-right: 2rem;
+                }
                 .left{
 
                 }

@@ -10,8 +10,7 @@ export default function Layout({ children }) {
             <style jsx>{`
                 main{
                     max-width: 1000px;
-                    margin: 0 auto;
-                    background: #f3f3f3;
+                    margin: 0 auto;                    
                 }
             `}
             </style>
