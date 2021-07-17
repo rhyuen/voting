@@ -28,6 +28,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
         const { user } = getSession(req, res);
 
+        console.log(formattedAllTheChoices);
+
         const latest = new Poll({
             title: escTitle,
             startDate: Date.now(),
@@ -45,6 +47,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             payload: result
         });
     } catch (e) {
+        console.log(e);
         return res.status(400).json({
             details: e
         });

@@ -31,8 +31,8 @@ const CreatorBar: FunctionComponent<Props> = ({ pollID }) => {
     return (
         <div>
             <Modal visible={modalVisible} handleConfirm={handleDelete} handleClose={() => setModalVisible(false)} />
-            <button type="button" onClick={handleDelete}>Delete</button>
-            <button type="button" onClick={handleUpdate}>Update</button>
+            <button className='button button--primary' type="button" onClick={handleDelete}>Delete</button>
+            <button className='button button--caution' type="button" onClick={handleUpdate}>Update</button>
         </div>
     )
 }

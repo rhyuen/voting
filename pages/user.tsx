@@ -26,10 +26,8 @@ export default function UserHome() {
 
     return (
         <Layout>
-            <section>
-                <h1>Your created Polls</h1>
-                <List data={data} />
-            </section>
+            <h1>Your created Polls</h1>
+            <List data={data} />
         </Layout>
     )
 }

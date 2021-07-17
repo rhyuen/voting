@@ -2,16 +2,105 @@
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
+    --PRIMARY: rgb(45, 0, 128);
+    --GREY: rgba(0,0,0,0.1);    
+    --DARK-GREY: rgba(0,0,0,0.4);
 }
 
 html, body{
     margin: 0;
 }
 
+h1{
+    font-size: 2rem;
+    color: var(--PRIMARY);
+}
+
 ul{
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 a{
-    text-decoration: none;
+    text-decoration: none;    
+    color: var(--PRIMARY);
+}
+
+a:visited{
+    color: var(--PRIMARY);
+}
+
+.card{
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+
+
+
+.button{                        
+    font-weight: 600;
+    padding: .5rem 2rem;
+    border-radius: .5rem;                            
+    flex-grow: 1;    
+    margin: 1rem;
+    transition: background .2s ease-in-out, color .2s ease-in-out;
+}
+.button:first-child{
+    margin-left: 0;
+}
+.button:last-child{
+    margin-right: 0;
+}                    
+
+.button:hover{
+    
+}
+
+.button--primary{
+    background: var(--PRIMARY);
+    color: white;
+    border: 2px solid var(--PRIMARY);
+}
+.button--primary:hover{
+    background: white;
+    color: var(--PRIMARY);
+}
+
+.button--secondary{
+    color: var(--DARK-GREY);
+    background: white;
+    border: 2px solid var(--DARK-GREY);
+}
+.button--secondary:hover{
+    background:var(--GREY);
+    color: black;
+}
+.button--secondary:disabled{
+    color: var(--DARK-GREY);
+    background: var(--GREY);
+    border: 2px solid transparent;
+}
+
+.button--submit{
+    background: forestgreen;
+    color: white;
+    border: 2px solid forestgreen;
+}
+
+.button--submit:hover{
+    color: forestgreen;
+    background: white;
+}
+.button--submit:disabled{
+    border-color: var(--DARK-GREY);
+    background: var(--GREY);
+    color: var(--DARK-GREY);
+}
+
+.button--caution{
+    background: palevioletred;
+    color: white;
+    border: 2px solid palevioletred;
 }

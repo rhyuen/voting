@@ -1,27 +1,26 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 
 
 interface Props {
     handleClose: () => void;
-    visible: boolean
-    handleConfirm: () => void
+    visible: boolean;
+    handleConfirm: () => void;
+    children: ReactNode;
 }
 
-const Modal: FunctionComponent<Props> = ({ visible, handleConfirm, handleClose }) => {
+const ErrorModal: FunctionComponent<Props> = ({ visible, handleConfirm, handleClose, children }) => {
     return (
         <div className="modal">
             <div className="card">
                 <div>
-                    <h1>Just so you know, no backsies.</h1>
+                    <h1>Something's Gone Wrong.</h1>
                     <p>
-                        Are you sure?<br />
+                        Something's gone wrong.<br />
+                        {children} <br />
                         <div className="form-group">
                             <button type="button"
-                                className="button button--caution"
-                                onClick={handleConfirm}>Yes</button>
-                            <button type="button"
                                 className="button button--secondary"
-                                onClick={handleClose}>Cancel</button>
+                                onClick={handleClose}>OK</button>
                         </div>
                     </p>
                 </div>
@@ -54,4 +53,4 @@ const Modal: FunctionComponent<Props> = ({ visible, handleConfirm, handleClose }
     )
 }
 
-export default Modal;
+export default ErrorModal;

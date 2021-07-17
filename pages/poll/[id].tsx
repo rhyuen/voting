@@ -105,10 +105,13 @@ export default function Poll() {
                                 {
                                     data.canVote ? null : <h3>You can only vote once</h3>
                                 }
-                                <input type="submit" value="Vote" disabled={!data.canVote} />
+                                <input type="submit"
+                                    value="Vote"
+                                    className="button button--primary"
+                                    disabled={!data.canVote} />
                             </form>
                             <div>
-                                <button type="button" onClick={e => setResultsVisible(true)}>Show Results</button>
+                                <button className="button button--secondary" type="button" onClick={e => setResultsVisible(true)}>Show Results</button>
                             </div>
                         </>
                     )
@@ -135,7 +138,7 @@ const Results = ({ data, handleClick }) => {
                 }
             </ul>
             <div>
-                <button type="button" onClick={e => handleClick(false)}>Hide Results</button>
+                <button type="button" className="button button--secondary" onClick={e => handleClick(false)}>Hide Results</button>
             </div>
         </>
     );

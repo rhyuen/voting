@@ -1,6 +1,7 @@
 import { Data } from "../shared/types";
 import Link from "next/link";
 import { FunctionComponent } from "react";
+import EmptyListNotice from "./EmptyListNotice";
 
 interface Props {
     data: Array<Data>;
@@ -32,30 +33,38 @@ const List: FunctionComponent<Props> = ({ data }) => {
     return (
         <ul style={{ display: "flex", flexDirection: "column-reverse" }}>
             {
-                data && data.length === 0 ? <h2>Add something please</h2> :
+                data && data.length === 0 ? <EmptyListNotice>It seems that the list is empty.  Kindly add something please.</EmptyListNotice> :
 
                     data.map(({ title: curr_title, question: curr_question, _id: id, creator, created_at }, index) => {
                         return (
-                            <li key={index}>
-                                <div>
+                            <li key={index} className="item">
+                                <div className='item__group'>
                                     <pre className="item__index">{index}</pre>
-                                    <Link href={`/poll/${id}`}>
-                                        <a className="item__question">{curr_question ?? "No Question"}</a>
-                                    </Link>
-                                    <br />
-                                    <div className="item__tag">
-                                        {curr_title ?? "No Title"}
-                                    </div>
+                                    <span className="item__meta">{creator} at {getRelativeDate(created_at)}</span>
                                 </div>
-                                <span className="item__meta">{creator} at {getRelativeDate(created_at)}</span>
+
+                                <Link href={`/poll/${id}`}>
+                                    <a className="item__question">{curr_question ?? "No Question"}</a>
+                                </Link>
+                                <div className="item__tag">
+                                    {curr_title ?? "No Title"}
+                                </div>
                             </li>
                         );
                     })
             }
 
             <style jsx>{`
-                li {
-                    margin-bottom: 1rem;
+                .item {
+                    margin-bottom: 4rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;                    
+                }
+                
+                .item__group{
+                    display: flex;                    
+                    align-items: center;
                 }
 
                 .item__index{
@@ -72,25 +81,34 @@ const List: FunctionComponent<Props> = ({ data }) => {
 
                 .item__meta{
                     font-size: 0.8rem;
+                    margin-left: 2rem;
                 }
 
                 .item__question{
                     font-size: 1.2rem;
-                    background: rgba(0,0,0,0.1);
+                    font-weight: 600;
+                    background: white;
+                    display: flex;
+                    border: 1px solid var(--GREY);
+                    border-radius: .5rem;
                     padding: 2rem;
                     margin: 2rem 0;
+                    margin-top: .5rem;
+                    transition: background .2s ease-in-out;
+                }
+                .item__question:hover{
+                    background: var(--GREY);
                 }
 
                 .item__tag{
-                    background: black;
-                    border-radius: 20px;
-                    padding: 0.25rem 1rem;
-                    color: white;
+                    background: white;                    
+                    padding: 0 1rem;
+                    color: var(--PRIMARY);
                     font-size: 0.8rem;                    
                     font-weight: 600;
-                    text-transform: uppercase;     
-                    margin: 1rem 0;      
-                    width: fit-content;         
+                    text-transform: uppercase;                                             
+                    width: fit-content;    
+                    user-select: none;     
                 }
                 `}
             </style>
