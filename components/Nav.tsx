@@ -25,11 +25,12 @@ export default function Nav() {
             </div>
             <style jsx>{`                
                 nav{                    
-                    padding: 3vh;                    
-                    height: 5rem;                     
+                    margin: 0 1rem;                    
+                    height: 5rem;                           
                 }     
                 .nav__container{
                     max-width: 1000px;
+                    height: 100%;
                     margin: 0 auto;                    
                     display: flex;
                     justify-content: space-between;
