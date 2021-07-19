@@ -60,7 +60,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
         return res.status(200).json({
             path: "POST /api/post-id-poll",
-            data: payload,
+            payload: [payload],
         });
     } catch (e) {
         console.log(e);

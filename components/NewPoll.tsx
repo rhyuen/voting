@@ -32,6 +32,18 @@ const NewPoll: FunctionComponent<Props> = ({
     isChoiceEmpty
 }) => {
 
+    const cannotSubmit = (): boolean => {
+        if (title === '') {
+            return true;
+        }
+        if (question === '') {
+            return true;
+        }
+        if (choiceValues.filter(c => c === "").length > 0) {
+            return true;
+        }
+        return false;
+    }
 
     return (
         <>
@@ -95,7 +107,10 @@ const NewPoll: FunctionComponent<Props> = ({
                     </button>
                 </div>
                 <div className='form-group'>
-                    <input type="submit" className='button button--submit' value="Submit" />
+                    <input type="submit"
+                        className='button button--submit'
+                        disabled={cannotSubmit()}
+                        value="Submit" />
                 </div>
 
 

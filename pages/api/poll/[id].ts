@@ -47,7 +47,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
         return res.status(200).json({
             path: "[GET] /api/poll/:id End Point",
-            data: withVotingEligibility
+            payload: [withVotingEligibility]
         });
     } catch (e) {
         console.log(e);

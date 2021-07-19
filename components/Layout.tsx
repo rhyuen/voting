@@ -1,4 +1,5 @@
 import Nav from "./Nav";
+import Head from "next/head";
 import { FunctionComponent, ReactNode } from "react";
 
 
@@ -9,6 +10,10 @@ interface Props {
 const Layout: FunctionComponent<Props> = ({ children }) => {
     return (
         <div>
+            <Head>
+                <title>choose</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <Nav />
             <main>
                 <section>{children}</section>

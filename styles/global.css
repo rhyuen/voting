@@ -68,6 +68,12 @@ a:visited{
     color: var(--PRIMARY);
 }
 
+.button--primary:disabled{
+    background: var(--GREY);
+    border-color: transparent;
+    color: var(--DARK-GREY);
+}
+
 .button--secondary{
     color: var(--DARK-GREY);
     background: white;
@@ -94,7 +100,7 @@ a:visited{
     background: white;
 }
 .button--submit:disabled{
-    border-color: var(--DARK-GREY);
+    border-color: transparent;
     background: var(--GREY);
     color: var(--DARK-GREY);
 }
@@ -103,4 +109,12 @@ a:visited{
     background: palevioletred;
     color: white;
     border: 2px solid palevioletred;
+}
+
+.form-group{
+    display: flex;
+}
+
+.form-group--right{
+    justify-content: flex-end;
 }

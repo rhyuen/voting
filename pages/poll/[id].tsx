@@ -1,38 +1,34 @@
 import Layout from "../../components/Layout";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { useRouter } from "next/router";
 import { Data } from "../../shared/types";
 import { useUser } from "@auth0/nextjs-auth0";
 import CreatorBar from "../../components/CreatorBar";
+import LoadingSignal from "../../components/LoadingSignal";
+import { getPoll, updatePoll } from "../../services/polls";
 
 
 
-export default function Poll() {
+const Poll: FunctionComponent<{}> = () => {
     const [data, setData] = useState<Data>();
     const [loading, setLoading] = useState<boolean>(true);
     const [choice, setChoice] = useState<string>("");
     const [resultsVisible, setResultsVisible] = useState<boolean>(false);
-    const { user, error, isLoading } = useUser();
+    const { user } = useUser();
     const router = useRouter();
 
-    if (error) {
-        return <div>{error.message}</div>;
-    }
-
-    if (isLoading) {
-        return <div>Loading User Details</div>;
-    }
 
     useEffect(() => {
         let mounted = true;
         if (router.isReady) {
-            const url = `/api/poll/${router.query.id}`;
-            fetch(url)
-                .then(res => res.json())
+
+            // Need to cast it as a string below because TS/SonarLint has an issue with string and string[] for whatever reason.
+            const queryID = router.query.id as string;
+            getPoll(queryID)
                 .then(res => {
                     if (mounted) {
-                        setData(res.data);
-                        console.log(res.data);
+                        const payload: Data = res.payload[0];
+                        setData(payload);
                         setLoading(false);
                     }
                 }).catch(e => {
@@ -47,24 +43,11 @@ export default function Poll() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setChoice("");
-        const payload = {
-            poll: data._id,
-            value: choice
-        };
 
-        const url = `/api/post-id-poll`;
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        }
-
-        fetch(url, options)
-            .then(res => res.json())
+        updatePoll(data._id, choice)
             .then(res => {
-                setData(res.data);
+                //update the endpoint to return an array
+                setData(res.payload[0]);
                 setResultsVisible(true);
                 console.log(res);
             }).catch(e => {
@@ -78,12 +61,12 @@ export default function Poll() {
         <Layout>
             {
                 loading ?
-                    <h1>Loading User details</h1> :
+                    <LoadingSignal>Loading User details</LoadingSignal> :
                     data.creator === user.email ? <CreatorBar pollID={data._id} /> : null
             }
 
             {
-                loading ? <h1>loading</h1> :
+                loading ? <LoadingSignal>Loading Poll</LoadingSignal> :
                     resultsVisible ? <Results data={data} handleClick={setResultsVisible} /> : (
                         <>
                             <h1>{data.title}</h1>
@@ -91,7 +74,7 @@ export default function Poll() {
                             <form onSubmit={handleSubmit}>
                                 {
                                     data.choices && data.choices.map(({ name }, choice_index) => (
-                                        <p key={choice_index}>
+                                        <div key={choice_index}>
                                             <input type="radio"
                                                 id={name}
                                                 name={data._id}
@@ -99,20 +82,29 @@ export default function Poll() {
                                                 checked={choice === name}
                                                 onChange={e => setChoice(e.target.value)} />
                                             <label htmlFor={name}>{name}</label>
-                                        </p>
+                                        </div>
                                     ))
                                 }
-                                {
-                                    data.canVote ? null : <h3>You can only vote once</h3>
-                                }
-                                <input type="submit"
-                                    value="Vote"
-                                    className="button button--primary"
-                                    disabled={!data.canVote} />
+                                <div className="form-group">
+                                    <input type="submit"
+                                        value="Vote"
+                                        className="button button--primary"
+                                        disabled={!data.canVote} />
+                                    <button className="button button--secondary"
+                                        type="button"
+                                        onClick={() => setResultsVisible(true)}>
+                                        Show Results
+                                    </button>
+                                </div>
                             </form>
-                            <div>
-                                <button className="button button--secondary" type="button" onClick={e => setResultsVisible(true)}>Show Results</button>
-                            </div>
+                            <style jsx>
+                                {`
+                                .form-group{
+                                    display: flex;
+                                    justify-content: flex-start;
+                                }
+                            `}
+                            </style>
                         </>
                     )
             }
@@ -120,7 +112,14 @@ export default function Poll() {
     )
 }
 
-const Results = ({ data, handleClick }) => {
+export default Poll;
+
+interface ResultsProps {
+    data: Data;
+    handleClick(isVisible: boolean): void;
+}
+
+const Results: FunctionComponent<ResultsProps> = ({ data, handleClick }) => {
 
     const { title, question, results, votedFor } = data;
 
@@ -138,7 +137,11 @@ const Results = ({ data, handleClick }) => {
                 }
             </ul>
             <div>
-                <button type="button" className="button button--secondary" onClick={e => handleClick(false)}>Hide Results</button>
+                <button type="button"
+                    className="button button--secondary"
+                    onClick={() => handleClick(false)}>
+                    Hide Results
+                </button>
             </div>
         </>
     );

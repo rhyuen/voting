@@ -14,6 +14,7 @@ export interface Data {
     choices: Array<Choice>;
     created_at: string;
     creator: string;
+    startDate: string;
     endDate: string;
     updated_at: string;
     _v: number;

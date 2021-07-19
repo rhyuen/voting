@@ -12,9 +12,9 @@ const Modal: FunctionComponent<Props> = ({ visible, handleConfirm, handleClose }
         <div className="modal">
             <div className="card">
                 <div>
-                    <h1>Just so you know, no backsies.</h1>
-                    <p>
-                        Are you sure?<br />
+                    <h1>Poll Deletion Confirmation</h1>
+                    <div>
+                        You're the creator of this Poll and this is a confirmation that you want to delete it.  Are you sure?<br />
                         <div className="form-group">
                             <button type="button"
                                 className="button button--caution"
@@ -23,7 +23,7 @@ const Modal: FunctionComponent<Props> = ({ visible, handleConfirm, handleClose }
                                 className="button button--secondary"
                                 onClick={handleClose}>Cancel</button>
                         </div>
-                    </p>
+                    </div>
                 </div>
             </div>
             <style jsx>{`
