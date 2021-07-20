@@ -1,10 +1,12 @@
 import { useUser } from "@auth0/nextjs-auth0";
 import Home from "../components/Home";
+import LandingPage from "../components/LandingPage";
+import LoadingSignal from "../components/LoadingSignal";
 
 export default function Index() {
     const { user, error, isLoading } = useUser();
     if (isLoading) {
-        return <div>loading.</div>
+        return <LoadingSignal />;
     }
 
     if (error) {
@@ -19,9 +21,6 @@ export default function Index() {
     }
 
     return (
-        <div>
-            <h1>vote in a poll</h1>
-            <a href="/api/auth/login">Login / Signup</a>
-        </div>
+        <LandingPage />
     );
 }

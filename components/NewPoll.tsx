@@ -1,5 +1,4 @@
-import { MouseEvent, FunctionComponent, ChangeEvent, FormEvent, useState, useEffect } from "react";
-import ErrorModal from "./ErrorModal";
+import { MouseEvent, FunctionComponent, ChangeEvent, FormEvent } from "react";
 import WarningText from "./WarningText";
 
 interface Props {
@@ -40,6 +39,11 @@ const NewPoll: FunctionComponent<Props> = ({
             return true;
         }
         if (choiceValues.filter(c => c === "").length > 0) {
+            //No empty values for any choices.
+            return true;
+        }
+        if (new Set(choiceValues).size !== choiceValues.length) {
+            //Cannot have two choices that are the same.
             return true;
         }
         return false;

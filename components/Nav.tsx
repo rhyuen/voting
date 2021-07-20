@@ -4,6 +4,8 @@ import { useUser } from "@auth0/nextjs-auth0";
 export default function Nav() {
     const { user } = useUser();
 
+    console.dir(user);
+
     return (
         <nav>
             <div className="nav__container">

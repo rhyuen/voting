@@ -20,6 +20,10 @@ const Layout: FunctionComponent<Props> = ({ children }) => {
 
                 <aside>
                     <h2>Recent updates</h2>
+                    <h3>July 20, 21</h3>
+                    <p>
+                        More styling and bug fixes.
+                    </p>
                     <h3>July 16, 21</h3>
                     <p>
                         It's more responsive.  More consistent styling.

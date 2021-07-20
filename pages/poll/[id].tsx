@@ -28,6 +28,7 @@ const Poll: FunctionComponent<{}> = () => {
                 .then(res => {
                     if (mounted) {
                         const payload: Data = res.payload[0];
+                        console.log(payload);
                         setData(payload);
                         setLoading(false);
                     }
@@ -49,7 +50,6 @@ const Poll: FunctionComponent<{}> = () => {
                 //update the endpoint to return an array
                 setData(res.payload[0]);
                 setResultsVisible(true);
-                console.log(res);
             }).catch(e => {
 
                 console.log(e);
@@ -70,22 +70,25 @@ const Poll: FunctionComponent<{}> = () => {
                     resultsVisible ? <Results data={data} handleClick={setResultsVisible} /> : (
                         <>
                             <h1>{data.title}</h1>
-                            <h2>{data.question}</h2>
+                            <div className='card'>
+                                {data.question}
+                            </div>
                             <form onSubmit={handleSubmit}>
                                 {
                                     data.choices && data.choices.map(({ name }, choice_index) => (
-                                        <div key={choice_index}>
+                                        <div key={choice_index} className="form-group">
                                             <input type="radio"
                                                 id={name}
                                                 name={data._id}
                                                 value={name}
+                                                disabled={!data.canVote}
                                                 checked={choice === name}
                                                 onChange={e => setChoice(e.target.value)} />
                                             <label htmlFor={name}>{name}</label>
                                         </div>
                                     ))
                                 }
-                                <div className="form-group">
+                                <div className="form-group form-group--left">
                                     <input type="submit"
                                         value="Vote"
                                         className="button button--primary"
@@ -98,11 +101,43 @@ const Poll: FunctionComponent<{}> = () => {
                                 </div>
                             </form>
                             <style jsx>
-                                {`
-                                .form-group{
-                                    display: flex;
-                                    justify-content: flex-start;
+                                {`                              
+
+                                input[type="radio"]{
+                                    appearance: none;
                                 }
+                                label{
+                                    display: flex;
+                                    font-weight: 600;
+                                    font-size: 1.2rem;
+                                    padding: 1rem;                                    
+                                    border-radius: 1rem;
+                                    width: 100%;                                    
+                                    justify-content: center;
+                                    border: .2rem solid var(--GREY);
+                                    background: white;
+                                    margin-bottom: 1rem;
+                                    cursor:pointer;
+                                    transition: background .2s ease-in-out, color .2s ease-in-out;
+                                }
+                                label:hover:enabled{
+                                    background: var(--PRIMARY);
+                                    color: white;
+                                }
+
+                                input:disabled ~ label{
+                                    border-color: transparent;
+                                    background: var(--GREY);
+                                    color: var(--DARK-GREY);
+                                    cursor: not-allowed;
+                                }                                        
+
+                                input:checked ~ label{
+                                    border: .2rem solid forestgreen;
+                                    background: forestgreen;
+                                    color: white;
+                                }
+
                             `}
                             </style>
                         </>
@@ -126,14 +161,21 @@ const Results: FunctionComponent<ResultsProps> = ({ data, handleClick }) => {
     return (
         <>
             <h1>{title}</h1>
-            <h2>{question}</h2>
-            <ul>
+            <div className="card">{question}</div>
+            <ul className="form-group form-group--vertical">
                 {
-                    Object.keys(results).map((k, results_index) => (
-                        <li key={results_index}>
-                            {k}  {results[k]} {k === votedFor ? <strong>You voted for this one</strong> : null}
-                        </li>
-                    ))
+                    Object.keys(results).map((k, results_index) => {
+                        return k === votedFor ?
+                            (
+                                <li key={results_index} className="result result--selected">
+                                    {k}  {results[k]} Your Choice
+                                </li>
+                            ) : (
+                                <li key={results_index} className="result">
+                                    {k}  {results[k]}
+                                </li>
+                            );
+                    })
                 }
             </ul>
             <div>
@@ -143,6 +185,29 @@ const Results: FunctionComponent<ResultsProps> = ({ data, handleClick }) => {
                     Hide Results
                 </button>
             </div>
+            <style jsx>{
+                `
+                    .result{
+                        display: flex;
+                        font-weight: 600;
+                        font-size: 1.2rem;
+                        padding: 1rem;                                    
+                        border-radius: 1rem;
+                        width: 100%;                                    
+                        justify-content: center;
+                        border: .2rem solid var(--GREY);
+                        background: white;
+                        margin-bottom: 1rem;                        
+                        transition: background .2s ease-in-out, color .2s ease-in-out;
+                        user-select: none;
+                    }                   
+                    .result--selected{
+                        border: .2rem solid forestgreen;
+                        background: forestgreen;
+                        color: white;                        
+                    } 
+                `
+            }</style>
         </>
     );
 }

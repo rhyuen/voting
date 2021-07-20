@@ -3,12 +3,14 @@ import NewPoll from "./NewPoll";
 import Layout from "./Layout";
 import List from "./List";
 import { Data } from "../shared/types";
+import LoadingSignal from "../components/LoadingSignal";
 import { getActivePolls, createPoll } from "../services/polls";
 
 
 
 export default function HomePage() {
 
+    const [isLoading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<Array<Data>>([]);
     const [title, setTitle] = useState<string>("");
     const [question, setQuestion] = useState<string>("");
@@ -63,9 +65,6 @@ export default function HomePage() {
     const handleChoices = (e: ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
         const castedName = Number(name);
-        console.log("handlechoices");
-        console.log(`${value} (value) is of type ${typeof value} `);
-        console.log(`${castedName} (name) is of type ${typeof castedName}`);
 
         if (!choiceValues[castedName]) {
             choiceValues[castedName] = "";
@@ -79,8 +78,6 @@ export default function HomePage() {
 
     const handleChoiceCountChange = (e) => {
         const { name } = e.target as HTMLButtonElement;
-
-        console.log(name);
 
         if (name === "increment") {
             setChoiceValues(choiceValues.concat(""));
@@ -106,6 +103,7 @@ export default function HomePage() {
             .then(res => {
                 if (mounted) {
                     setData(res.payload);
+                    setLoading(false);
                 }
             }).catch(e => {
                 console.log(e);
@@ -130,7 +128,7 @@ export default function HomePage() {
                 isTitleEmpty={emptyTitleWarning}
                 isChoiceEmpty={emptyChoiceWarning}
                 setQuestion={setQuestion} />
-            <List data={data} />
+            {isLoading ? <LoadingSignal /> : <List data={data} />}
         </Layout>
     )
 }

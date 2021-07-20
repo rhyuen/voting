@@ -32,8 +32,6 @@ const CreatorBar: FunctionComponent<Props> = ({ pollID }) => {
     return (
         <section className="form-group form-group--right">
             <Modal visible={modalVisible} handleConfirm={handleDelete} handleClose={() => setModalVisible(false)} />
-            {/* <button className='button button--primary' type="button" onClick={handleDelete}>Delete</button>
-            <button className='button button--caution' type="button" onClick={handleUpdate}>Update</button> */}
 
             <button className="test" onClick={handleUpdate}>
                 <img src="/images/delete.png" alt='blah' />

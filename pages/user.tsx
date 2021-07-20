@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import List from "../components/List"
 import { getUserCreatedPolls } from "../services/polls";
+import LoadingSignal from "../components/LoadingSignal";
 
 export default function UserHome() {
+    const [isLoading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -12,6 +14,7 @@ export default function UserHome() {
             .then(res => {
                 if (mounted) {
                     setData(res.payload);
+                    setLoading(false);
                 }
                 return () => mounted = false;
             }).catch(e => {
@@ -27,7 +30,7 @@ export default function UserHome() {
     return (
         <Layout>
             <h1>Your created Polls</h1>
-            <List data={data} />
+            {isLoading ? <LoadingSignal /> : <List data={data} />}
         </Layout>
     )
 }

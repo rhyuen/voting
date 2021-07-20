@@ -118,3 +118,11 @@ a:visited{
 .form-group--right{
     justify-content: flex-end;
 }
+
+.form-group--left{
+    justify-content: flex-start;
+}
+
+.form-group--vertical{
+    flex-direction: column;
+}
