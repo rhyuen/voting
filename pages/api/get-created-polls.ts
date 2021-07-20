@@ -9,9 +9,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { user } = getSession(req, res);
 
-        console.log(user.email);
-
-        const createdPolls = await Poll.find({ creator: user.email }).exec();
+        const createdPolls = await Poll.find({ creator: user.sub }).exec();
         return res.status(200).json({
             path: "creator polls endpoint",
             payload: createdPolls

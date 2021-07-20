@@ -22,7 +22,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         const escPollID = validator.escape(pollID);
         const options = {
             _id: escPollID,
-            creator: user.email
+            creator: user.sub
         }
 
         const deletionResult = await Poll.deleteOne(options).exec();
