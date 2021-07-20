@@ -40,7 +40,7 @@ const List: FunctionComponent<Props> = ({ data }) => {
                             <li key={index} className="item">
                                 <div className='item__group'>
                                     <pre className="item__index">{index}</pre>
-                                    <span className="item__meta">{creator} at {getRelativeDate(created_at)}</span>
+                                    <span className="item__meta">{creator.slice(20)},  {getRelativeDate(created_at)}</span>
                                 </div>
 
                                 <Link href={`/poll/${id}`}>

@@ -33,7 +33,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         const latest = new Poll({
             title: escTitle,
             startDate: Date.now(),
-            creator: user.email,
+            creator: user.sub,
             question: escQuestion,
             choices: formattedAllTheChoices,
             endDate: Date.now() + 3600000

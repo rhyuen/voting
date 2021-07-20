@@ -9,6 +9,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { user } = getSession(req, res);
 
+
         const activePolls = await Poll.find({}).exec();
         return res.status(200).json({
             path: "results end point",

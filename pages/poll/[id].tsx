@@ -62,7 +62,7 @@ const Poll: FunctionComponent<{}> = () => {
             {
                 loading ?
                     <LoadingSignal>Loading User details</LoadingSignal> :
-                    data.creator === user.email ? <CreatorBar pollID={data._id} /> : null
+                    data.creator === user.sub ? <CreatorBar pollID={data._id} /> : null
             }
 
             {
